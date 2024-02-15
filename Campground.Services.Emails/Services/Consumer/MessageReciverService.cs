@@ -1,26 +1,23 @@
 ﻿using Azure.Messaging.ServiceBus;
 using Campground.Services.Emails.Models;
+using Campground.Shared.Communication.AzureServiceBus;
 using System.Net.Http.Json;
 using System.Text.Json;
 
-namespace Campground.Services.Emails.Services
+namespace Campground.Services.Emails.Services.Consumer
 {
-    public class MessageReceiverService
+    public class MessageReceiverConsumer
     {
-        private readonly IConfiguration _configuration;
-        private readonly ServiceBusClient _client;
+        private readonly AzureServiceBusHandler _serviceBusHandler;
         private readonly ServiceBusProcessor _processor;
         private readonly EmailService _emailService;
 
-        public MessageReceiverService(IConfiguration configuration, EmailService emailService)
+        public MessageReceiverConsumer(AzureServiceBusHandler serviceBusHandler, IConfiguration configuration, EmailService emailService)
         {
-            _configuration = configuration;
+            _serviceBusHandler = serviceBusHandler;
+            _processor = _serviceBusHandler.CreateProcessor(configuration.GetSection("Queues:Email").Value);
+            _serviceBusHandler.RegisterMessageHandler(_processor, MessageHandler, ErrorHandler);
             _emailService = emailService;
-            _client = new ServiceBusClient(Environment.GetEnvironmentVariable("AzureServiceBus") ?? _configuration!.GetConnectionString("AzureServiceBus"), new ServiceBusClientOptions()
-            {
-                TransportType = ServiceBusTransportType.AmqpWebSockets
-            });
-            _processor = _client.CreateProcessor(_configuration["Queues:Email"]!);
         }
 
         public async Task RegisterMessageHandlerAsync()

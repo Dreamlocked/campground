@@ -1,8 +1,10 @@
 using Campground.Services.Emails.Services;
+using Campground.Shared.Communication.AzureServiceBus;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddSingleton<MessageReceiverService>();
+builder.Services.AddAzureServiceBusHandler(builder.Configuration);
+
 builder.Services.AddSingleton<EmailService>();
 
 builder.Services.AddRouting(x => x.LowercaseUrls = true);
@@ -25,7 +27,6 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-var messageReceiverService = app.Services.GetRequiredService<MessageReceiverService>();
-await messageReceiverService.RegisterMessageHandlerAsync();
+
 
 app.Run();
