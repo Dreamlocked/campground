@@ -5,5 +5,4 @@ using MediatR;
 namespace Campground.Services.Campgrounds.Api.Read.Querys.Campgrounds.GetById
 {
     public record GetByIdCampgroundQuery(Guid Id) : IRequest<CampgroundResponse>;
-
 }

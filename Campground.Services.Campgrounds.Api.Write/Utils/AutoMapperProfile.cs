@@ -3,6 +3,9 @@ using Campground.Services.Campgrounds.Api.Write.Commands.Bookings.Create;
 using Campground.Services.Campgrounds.Api.Write.Commands.Bookings.Update;
 using Campground.Services.Campgrounds.Api.Write.Commands.Campgrounds.Create;
 using Campground.Services.Campgrounds.Api.Write.Commands.Campgrounds.Update;
+using Campground.Services.Campgrounds.Api.Write.Commands.Notifications.Create;
+using Campground.Services.Campgrounds.Api.Write.Commands.Reviews.Create;
+using Campground.Services.Campgrounds.Api.Write.Commands.Reviews.Update;
 using Campground.Services.Campgrounds.Api.Write.Commands.Users.Create;
 using Campground.Services.Campgrounds.Domain.Entities;
 using Campground.Services.Campgrounds.Domain.Utils;
@@ -36,6 +39,18 @@ namespace Campground.Services.Campgrounds.Api.Write.Utils
 
             CreateMap<UpdateBookingCommand, Booking>()
                 .ForMember(dest => dest.Id, opt => opt.Ignore());
+
+            CreateMap<CreateNotificationCommand, Notification>()
+                .ForMember(dest => dest.CreateAt, opt => opt.MapFrom(src => DateTime.UtcNow))
+                .ForMember(dest => dest.Viewed, opt => opt.MapFrom(src => false));
+
+            CreateMap<CreateReviewCommand, Review>()
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => Guid.NewGuid()))
+                .ForMember(dest => dest.CreateAt, opt => opt.MapFrom(src => DateTime.UtcNow));
+
+            CreateMap<UpdateReviewCommand, Review>()
+                .ForMember(dest => dest.Id, opt => opt.Ignore());
+
         }
 
         private Guid GetUserId() => Guid.Parse(_httpContextAccessor.HttpContext!.User.FindFirstValue(ClaimTypes.NameIdentifier)!);

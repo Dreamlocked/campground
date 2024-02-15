@@ -20,5 +20,15 @@ namespace Campground.Services.Campgrounds.Infrastructure.Data.Repository
                 .FirstOrDefaultAsync(c => c.Id == id);
         }
 
+        public async Task<List<Domain.Entities.Campground?>> GetAllWithDetails(Guid id)
+        {
+            return _dbContext.Campgrounds
+                .Include(c => c.Host)
+                .Include(c => c.Bookings)
+                .ThenInclude(b => b.User)
+                .Include(c => c.Bookings)
+                .ThenInclude(b => b.Review).ToList();
+        }
+
     }
 }

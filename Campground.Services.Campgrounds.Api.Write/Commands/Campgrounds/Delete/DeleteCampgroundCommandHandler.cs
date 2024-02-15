@@ -5,13 +5,12 @@ using MediatR;
 
 namespace Campground.Services.Campgrounds.Api.Write.Commands.Campgrounds.Delete
 {
-    internal sealed class DeleteCampgroundCommandHandler(IUnitOfWork unitOfWork, IMapper mapper) : IRequestHandler<DeleteCampgroundCommand, Unit>
+    internal sealed class DeleteCampgroundCommandHandler(IUnitOfWork unitOfWork) : IRequestHandler<DeleteCampgroundCommand, Unit>
     {
         private readonly IUnitOfWork _unitOfWork = unitOfWork;
-        private readonly IMapper _mapper = mapper;
         public async Task<Unit> Handle(DeleteCampgroundCommand command, CancellationToken cancellationToken)
         {
-            await _unitOfWork.CampgroundRepository.DeleteByIdAsync(command.CampgroundId);
+            await _unitOfWork.CampgroundRepository.DeleteByIdAsync(command.Id);
             await _unitOfWork.CompleteAsync();
 
             return Unit.Value;

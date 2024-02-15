@@ -1,6 +1,6 @@
-﻿namespace Campground.Services.Campgrounds.Api.Write.Commands.Reviews.Delete
+﻿using MediatR;
+
+namespace Campground.Services.Campgrounds.Api.Write.Commands.Reviews.Delete
 {
-    public class DeleteReviewCommand
-    {
-    }
+    public record DeleteReviewCommand(Guid Id) : IRequest<Unit>;
 }

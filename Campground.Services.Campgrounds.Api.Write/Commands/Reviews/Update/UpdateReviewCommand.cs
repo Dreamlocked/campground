@@ -1,6 +1,10 @@
-﻿namespace Campground.Services.Campgrounds.Api.Write.Commands.Reviews.Update
+﻿using MediatR;
+
+namespace Campground.Services.Campgrounds.Api.Write.Commands.Reviews.Update
 {
-    public class UpdateReviewCommand
-    {
-    }
+    public record UpdateReviewCommand(
+        Guid Id,
+        string Comment,
+        int Rating
+        ) : IRequest<Unit>;
 }

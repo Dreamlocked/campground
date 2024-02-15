@@ -3,7 +3,7 @@
 namespace Campground.Services.Campgrounds.Api.Write.Commands.Campgrounds.Update
 {
     public record UpdateCampgroundCommand(
-        Guid CampgroundId,
+        Guid Id,
         string Title,
         decimal Latitude,
         decimal Longitude,

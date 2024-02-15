@@ -1,6 +1,9 @@
-﻿namespace Campground.Services.Campgrounds.Api.Write.Commands.Notifications.Create
+﻿using MediatR;
+
+namespace Campground.Services.Campgrounds.Api.Write.Commands.Notifications.Create
 {
-    public class CreateNotificationCommand
-    {
-    }
+    public record CreateNotificationCommand(
+        Guid UserId,
+        string Message
+        ) : IRequest<Unit>;
 }

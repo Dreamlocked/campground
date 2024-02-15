@@ -21,8 +21,4 @@
     <ProjectReference Include="..\Campground.Services.Campgrounds.Infrastructure\Campground.Services.Campgrounds.Infrastructure.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Querys\Bookings\Common\" />
-  </ItemGroup>
-
 </Project>

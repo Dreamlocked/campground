@@ -32,13 +32,12 @@ namespace Campground.Services.Campgrounds.Api.Write.Commands.Campgrounds.Update
                 return newImage;
             });
 
-            // TODO: This is a bug. The actualImages property is not being set in the command object.
-
             var imagesToDelete = campground.Images.Where(image => !command.actualImages.Contains(image.Id)).ToList();
-
             imagesToDelete.ForEach(async image => await _blobStorageService.DeleteFileAsync(campground.Id.ToString().Split('-')[0], image.Filename!));
 
-            campground.Images = (await Task.WhenAll(imageTasks)).ToList();
+            var currentImages = (await Task.WhenAll(command.actualImages.Select(async image => await _unitOfWork.ImageRepository.GetByIdAsync(image)))).ToList();
+            var newImages = (await Task.WhenAll(imageTasks)).ToList();
+            campground.Images = currentImages.Concat(newImages).ToList()!;
 
             await _unitOfWork.ImageRepository.DeleteManyAsync(image => imagesToDelete.Contains(image));
             await _unitOfWork.CampgroundRepository.UpdateAsync(campground);

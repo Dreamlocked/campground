@@ -1,6 +1,10 @@
-﻿namespace Campground.Services.Campgrounds.Api.Write.Commands.Reviews.Create
+﻿using MediatR;
+
+namespace Campground.Services.Campgrounds.Api.Write.Commands.Reviews.Create
 {
-    public class CreateReviewCommand
-    {
-    }
+    public record CreateReviewCommand(
+        Guid BookingId,
+        string Comment,
+        int Rating
+        ) : IRequest<Unit>;
 }
