@@ -51,9 +51,22 @@
       "UpstreamPathTemplate": "/api/campgrounds/{everything}",
       "UpstreamHttpMethod": [ "Get" ],
       "SwaggerKey": "campgrounds-read"
+    },
+    {
+      "DownstreamPathTemplate": "/api/{everything}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "campground.services.billings",
+          "Port": 8081
+        }
+      ],
+      "UpstreamPathTemplate": "/api/billings/{everything}",
+      "UpstreamHttpMethod": [ "Get" ],
+      "SwaggerKey": "billings"
     }
   ],
   "GlobalConfiguration": {
-    "BaseUrl": "http://localhost:8081"
+    "BaseUrl": "https://campground.api-gateway:8081"
   }
 }

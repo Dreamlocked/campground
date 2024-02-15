@@ -15,7 +15,7 @@ namespace Campground.Services.Campgrounds.Api.Read.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(Guid id)
         {
-            var campground = await _mediator.Send(new GetCampgroundByIdQuery(id));
+            var campground = await _mediator.Send(new GetByIdCampgroundQuery(id));
             return Ok(campground);
         }
     }

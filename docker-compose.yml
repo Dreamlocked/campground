@@ -16,8 +16,6 @@ services:
       ACCEPT_EULA: "Y"
     volumes:
       - dbdata:/var/lib/sqlserver
-    networks:
-      - backend
 
   campground.api:
     container_name: campground.api-gateway
@@ -27,8 +25,6 @@ services:
       dockerfile: Campground.API/Dockerfile
     ports:
       - 8081:8081   
-    networks:
-      - backend
 
   campground.services.campgrounds.api.read:
     container_name: campground.services.campgrounds.api.read
@@ -36,16 +32,13 @@ services:
     build:
       context: .
       dockerfile: Campground.Services.Campgrounds.Api.Read/Dockerfile
-    networks:
-      - backend
+
   campground.services.campgrounds.api.write:
     container_name: campground.services.campgrounds.api.write
     image: ${DOCKER_REGISTRY-}campgroundservicescampgroundsapiwrite
     build:
       context: .
       dockerfile: Campground.Services.Campgrounds.Api.Write/Dockerfile
-    networks:
-      - backend
 
   campground.services.emails:
     container_name: campground.services.emails
@@ -53,8 +46,6 @@ services:
     build:
       context: .
       dockerfile: Campground.Services.Emails/Dockerfile
-    networks:
-      - backend
 
   campground.services.authentications:
     container_name: campground.services.authentications
@@ -62,5 +53,11 @@ services:
     build:
       context: .
       dockerfile: Campground.Services.Authentications/Dockerfile
-    networks:
-      - backend
+
+  campground.services.billings:
+    container_name: campground.services.billings
+    image: ${DOCKER_REGISTRY-}campgroundservicesbillings
+    build:
+      context: .
+      dockerfile: Campground.Services.Billings/Dockerfile
+

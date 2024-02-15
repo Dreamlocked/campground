@@ -9,12 +9,12 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Campground.Services.Campgrounds.Api.Read.Querys.Campgrounds.GetById
 {
-    internal sealed class GetCampgroundByIdQueryHandler(IUnitOfWork unitOfWork, IMapper mapper) : IRequestHandler<GetCampgroundByIdQuery, CampgroundResponse>
+    internal sealed class GetByIdCampgroundQueryHandler(IUnitOfWork unitOfWork, IMapper mapper) : IRequestHandler<GetByIdCampgroundQuery, CampgroundResponse>
     {
         private readonly IUnitOfWork _unitOfWork = unitOfWork;
         private readonly IMapper _mapper = mapper;
 
-        public async Task<CampgroundResponse> Handle(GetCampgroundByIdQuery query, CancellationToken cancellationToken)
+        public async Task<CampgroundResponse> Handle(GetByIdCampgroundQuery query, CancellationToken cancellationToken)
         {
             var campground = await _unitOfWork.CampgroundRepository.GetByIdWithDetails(query.Id);
 

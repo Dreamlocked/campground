@@ -22,7 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Querys\Campgrounds\GetAll\" />
+    <Folder Include="Querys\Bookings\Common\" />
   </ItemGroup>
 
 </Project>

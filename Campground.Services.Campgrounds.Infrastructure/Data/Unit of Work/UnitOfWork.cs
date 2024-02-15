@@ -13,9 +13,17 @@ namespace Campground.Services.Campgrounds.Infrastructure.Data.Unit_of_Work
         private readonly CampgroundContext _dbContext = dbContext;
         private CampgroundRepository? _campgroundRepository;
         private UserRepository? _userRepository;
+        private ImageRepository? _imageRepository;
+        private ReviewRepository? _reviewRepository;
+        private NotificationRepository? _notificationRepository;
+        private BookingRepository? _bookingRepository;
 
         public CampgroundRepository CampgroundRepository => _campgroundRepository ??= new CampgroundRepository(_dbContext);
         public UserRepository UserRepository => _userRepository ??= new UserRepository(_dbContext);
+        public ImageRepository ImageRepository => _imageRepository ??= new ImageRepository(_dbContext);
+        public ReviewRepository ReviewRepository => _reviewRepository ??= new ReviewRepository(_dbContext);
+        public NotificationRepository NotificationRepository => _notificationRepository ??= new NotificationRepository(_dbContext);
+        public BookingRepository BookingRepository => _bookingRepository ??= new BookingRepository(_dbContext);
 
         public async Task CompleteAsync() => await _dbContext.SaveChangesAsync();
 

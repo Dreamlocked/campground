@@ -39,6 +39,16 @@ namespace Campground.Services.Campgrounds.Infrastructure.Data.Repository.Base
             return Task.CompletedTask;
         }
 
+        public async Task DeleteByIdAsync(Guid id)
+        {
+            var entity = await _dbContext.Set<T>().FindAsync(id);
+            if(entity != null)
+            {
+                _dbContext.Set<T>().Remove(entity);
+                await _dbContext.SaveChangesAsync();
+            }
+        }
+
         public async Task<IEnumerable<T>> GetAllAsync()
         {
             return await _dbContext.Set<T>().ToListAsync();

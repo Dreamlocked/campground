@@ -8,7 +8,8 @@
         "campground.api": "StartDebugging",
         "campground.services.campgrounds.api.read": "StartDebugging",
         "campground.services.campgrounds.api.write": "StartDebugging",
-        "campground.services.emails": "StartDebugging"
+        "campground.services.emails": "StartDebugging",
+        "campground.services.billings": "StartDebugging"
       }
     }
   }

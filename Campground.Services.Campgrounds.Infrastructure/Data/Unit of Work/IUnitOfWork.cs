@@ -12,6 +12,9 @@ namespace Campground.Services.Campgrounds.Infrastructure.Data.Unit_of_Work
     {
         CampgroundRepository CampgroundRepository { get; }
         UserRepository UserRepository { get; }
+        BookingRepository BookingRepository { get; }
+        ImageRepository ImageRepository { get; }
+        NotificationRepository NotificationRepository { get; }
         Task CompleteAsync();
     }
 }
