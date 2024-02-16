@@ -1,5 +1,6 @@
 ﻿using Campground.Services.Emails.Models;
 using Campground.Services.Emails.Services;
+using Campground.Shared.Communication.AzureServiceBus;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,9 +14,9 @@ namespace Campground.Services.Emails.Controllers
 
         // Crea metodo para enviar correo
         [HttpPost]
-        public IActionResult Send(Email email)
+        public async Task<IActionResult> Send(Email email)
         {
-            _emailService.SendEmail(email);
+            await _emailService.SendMessageAsync(email);
             return Ok();
         }
 

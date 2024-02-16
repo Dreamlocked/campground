@@ -5,44 +5,58 @@ using Azure.Messaging.ServiceBus;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
+using Campground.Shared.Communication.AzureServiceBus.Interfaces;
+using System.Text.Json;
 
 namespace Campground.Shared.Communication.AzureServiceBus
 {
-    public class AzureServiceBusHandler
+    public class AzureServiceBusHandler : IMessageSender
     {
         private readonly ServiceBusClient _client;
-        private readonly IConfiguration _configuration;
+        private readonly Dictionary<string, ServiceBusProcessor> _processors = new();
 
         public AzureServiceBusHandler(IConfiguration configuration)
         {
-            _configuration = configuration;
-            string connectionString = _configuration.GetConnectionString("AzureServiceBus")!;
+            string connectionString = configuration.GetConnectionString("AzureServiceBus")!;
             _client = new ServiceBusClient(connectionString);
         }
 
-        public ServiceBusProcessor CreateProcessor(string queueName)
+        public void RegisterMessageHandler(string queueName, IMessageHandler messageHandler)
         {
-            return _client.CreateProcessor(queueName);
+            var processor = _client.CreateProcessor(queueName);
+            processor.ProcessMessageAsync += async args =>
+            {
+                string messageBody = args.Message.Body.ToString();
+                Console.WriteLine($"Received message: {messageBody}");
+
+                await messageHandler.HandleMessageAsync(messageBody);
+
+                await args.CompleteMessageAsync(args.Message);
+            };
+            processor.ProcessErrorAsync += ErrorHandler;
+            _processors[queueName] = processor;
         }
 
-        public void RegisterMessageHandler(ServiceBusProcessor processor, Func<ProcessMessageEventArgs, Task> messageHandler, 
-            Func<ProcessErrorEventArgs, Task> errorHandler)
+        public async Task StartProcessingAsync(string queueName)
         {
-            processor.ProcessMessageAsync += messageHandler;
-            processor.ProcessErrorAsync += errorHandler;
+            if(_processors.TryGetValue(queueName, out var processor))
+            {
+                await processor.StartProcessingAsync();
+            }
         }
 
-        public async Task SendMessageAsync(string queueName, string message)
+        public async Task SendMessageAsync<T>(string queueName, T messageObject)
         {
+            var message = JsonSerializer.Serialize(messageObject)!;
             ServiceBusSender sender = _client.CreateSender(queueName);
             await sender.SendMessageAsync(new ServiceBusMessage(message));
         }
 
-        public async Task<string> ReceiveMessageAsync(string queueName)
+        private static Task ErrorHandler(ProcessErrorEventArgs args)
         {
-            ServiceBusReceiver receiver = _client.CreateReceiver(queueName);
-            ServiceBusReceivedMessage receivedMessage = await receiver.ReceiveMessageAsync();
-            return receivedMessage.Body.ToString();
+            Console.WriteLine($"Message handler encountered an exception {args.Exception}.");
+            return Task.CompletedTask;
         }
     }
+
 }

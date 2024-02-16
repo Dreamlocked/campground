@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Campground.Shared.Communication.AzureServiceBus.Interfaces;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -13,7 +14,9 @@ namespace Campground.Shared.Communication.AzureServiceBus
         public static IServiceCollection AddAzureServiceBusHandler(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddSingleton<AzureServiceBusHandler>();
+            services.AddSingleton<IMessageSender, AzureServiceBusHandler>();
             return services;
         }
     }
+
 }

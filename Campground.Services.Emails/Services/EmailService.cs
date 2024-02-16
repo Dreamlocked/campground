@@ -5,13 +5,27 @@ using MailKit.Net.Smtp;
 using MailKit.Security;
 using Azure.Messaging.ServiceBus;
 using System.Text.Json;
-
+using Campground.Shared.Communication.AzureServiceBus.Interfaces;
+using Campground.Shared.Communication.AzureServiceBus;
 
 namespace Campground.Services.Emails.Services
 {
-    public class EmailService(IConfiguration configuration)
+    public class EmailService(IConfiguration configuration, AzureServiceBusHandler serviceBusHandler) : IMessageHandler
     {
         private readonly IConfiguration _configuration = configuration;
+        private readonly AzureServiceBusHandler _serviceBusHandler = serviceBusHandler;
+
+        public async Task HandleMessageAsync(string message)
+        {
+            var email = JsonSerializer.Deserialize<Email>(message)!;
+            SendEmail(email);
+        }
+
+        public async Task SendMessageAsync<T>(T message)
+        {
+            await _serviceBusHandler.SendMessageAsync(_configuration.GetSection("Queue:Name").Value!, message);
+        }
+
         public void SendEmail(Email request)
         {
             try
