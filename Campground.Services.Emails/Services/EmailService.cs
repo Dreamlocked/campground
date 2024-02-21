@@ -23,7 +23,7 @@ namespace Campground.Services.Emails.Services
 
         public async Task SendMessageAsync<T>(T message)
         {
-            await _serviceBusHandler.SendMessageAsync(_configuration.GetSection("Queue:Name").Value!, message);
+            await _serviceBusHandler.SendMessageAsync(_configuration.GetSection("Queue:Email").Value!, message);
         }
 
         public void SendEmail(Email request)

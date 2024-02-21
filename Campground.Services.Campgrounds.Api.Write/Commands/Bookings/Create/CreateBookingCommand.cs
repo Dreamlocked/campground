@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using Campground.Services.Campgrounds.Domain.Entities;
+using MediatR;
 
 namespace Campground.Services.Campgrounds.Api.Write.Commands.Bookings.Create
 {
@@ -6,5 +7,5 @@ namespace Campground.Services.Campgrounds.Api.Write.Commands.Bookings.Create
         Guid CampgroundId,
         DateTime ArrivingDate,
         DateTime LeavingDate
-    ) : IRequest<Unit>;
+    ) : IRequest<Guid>;
 }

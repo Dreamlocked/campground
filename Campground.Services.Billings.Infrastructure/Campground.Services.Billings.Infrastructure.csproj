@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Campground.Services.Billings.Domain\Campground.Services.Billings.Domain.csproj" />
+    <ProjectReference Include="..\Campground.Shared.Communication.AzureServiceBus\Campground.Shared.Communication.AzureServiceBus.csproj" />
   </ItemGroup>
 
 </Project>

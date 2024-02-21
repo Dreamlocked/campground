@@ -8,37 +8,53 @@ volumes:
 
 services:
   sql_server:
-    image: mcr.microsoft.com/mssql/server
+    container_name: sql_server
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    user: root
     ports:
       - 1433:1433
     environment:
       SA_PASSWORD: "admin123$"
       ACCEPT_EULA: "Y"
     volumes:
-      - dbdata:/var/lib/sqlserver
+      - dbdata:/var/opt/mssql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    command: /bin/bash -c "(/opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P 'admin123$' -d master -i /docker-entrypoint-initdb.d/init.sql & ) && /opt/mssql/bin/sqlservr"
+    networks:
+      - backend
 
   campground.api:
-    container_name: campground.api-gateway
+    container_name: campground.api
     image: ${DOCKER_REGISTRY-}campgroundapi
     build:
       context: .
       dockerfile: Campground.API/Dockerfile
     ports:
-      - 8081:8081   
+      - 8080:8080   
+    networks:
+      - backend
 
   campground.services.campgrounds.api.read:
     container_name: campground.services.campgrounds.api.read
     image: ${DOCKER_REGISTRY-}campgroundservicescampgroundsapiread
+    depends_on:
+      - sql_server
     build:
       context: .
       dockerfile: Campground.Services.Campgrounds.Api.Read/Dockerfile
+    networks:
+      - backend
 
   campground.services.campgrounds.api.write:
     container_name: campground.services.campgrounds.api.write
     image: ${DOCKER_REGISTRY-}campgroundservicescampgroundsapiwrite
+    depends_on:
+      - sql_server
     build:
       context: .
       dockerfile: Campground.Services.Campgrounds.Api.Write/Dockerfile
+    networks:
+      - backend
 
   campground.services.emails:
     container_name: campground.services.emails
@@ -46,13 +62,19 @@ services:
     build:
       context: .
       dockerfile: Campground.Services.Emails/Dockerfile
+    networks:
+      - backend
 
   campground.services.authentications:
     container_name: campground.services.authentications
     image: ${DOCKER_REGISTRY-}campgroundservicesauthentications
+    depends_on:
+      - sql_server
     build:
       context: .
       dockerfile: Campground.Services.Authentications/Dockerfile
+    networks:
+      - backend
 
   campground.services.billings:
     container_name: campground.services.billings
@@ -60,4 +82,6 @@ services:
     build:
       context: .
       dockerfile: Campground.Services.Billings/Dockerfile
+    networks:
+      - backend
 

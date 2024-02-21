@@ -13,7 +13,7 @@ namespace Campground.Services.Campgrounds.Api.Read.Querys.Campgrounds.GetAll
         private readonly IMapper _mapper = mapper;
         public async Task<IReadOnlyList<CampgroundsResponse>> Handle(GetAllCampgroundQuery request, CancellationToken cancellationToken)
         {
-            var campgrounds = await _unitOfWork.CampgroundRepository.GetAllAsync();
+            var campgrounds = await _unitOfWork.CampgroundRepository.GetAllWithDetails();
             return campgrounds.Select(_mapper.Map<CampgroundsResponse>).ToList();
         }
     }

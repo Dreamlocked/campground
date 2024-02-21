@@ -11,6 +11,13 @@ namespace Campground.Services.Campgrounds.Infrastructure.Data.Repository
 {
     public class BookingRepository(CampgroundContext dbContext) : BaseRepository<Booking>(dbContext)
     {
+        public async Task<List<Booking>> GetAllWithDetails()
+        {
+            return await _dbContext.Bookings
+                .Include(c => c.Review)
+                .ToListAsync();
+        }
+
         public async Task<Booking> GetByIdWithDetails(Guid id)
         {
             return await _dbContext.Bookings

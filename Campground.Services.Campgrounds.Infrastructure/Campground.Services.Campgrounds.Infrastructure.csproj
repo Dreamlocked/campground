@@ -20,6 +20,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Campground.Services.Campgrounds.Domain\Campground.Services.Campgrounds.Domain.csproj" />
+    <ProjectReference Include="..\Campground.Shared.Communication.AzureServiceBus\Campground.Shared.Communication.AzureServiceBus.csproj" />
   </ItemGroup>
 
 </Project>

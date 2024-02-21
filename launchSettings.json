@@ -9,7 +9,8 @@
         "campground.services.campgrounds.api.read": "StartDebugging",
         "campground.services.campgrounds.api.write": "StartDebugging",
         "campground.services.emails": "StartDebugging",
-        "campground.services.billings": "StartDebugging"
+        "campground.services.billings": "StartDebugging",
+        "sql_server": "StartWithoutDebugging"
       }
     }
   }

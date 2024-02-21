@@ -7,15 +7,17 @@ using System.Security.Claims;
 
 namespace Campground.Services.Campgrounds.Api.Write.Commands.Campgrounds.Create
 {
-    internal sealed class CreateCampgroundCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, IBlobStorageService blobStorageService) : IRequestHandler<CreateCampgroundCommand, Unit>
+    internal sealed class CreateCampgroundCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, IBlobStorageService blobStorageService, IHttpContextAccessor httpContextAccessor) : IRequestHandler<CreateCampgroundCommand, Unit>
     {
         private readonly IUnitOfWork _unitOfWork = unitOfWork;
         private readonly IMapper _mapper = mapper;
-        private readonly IBlobStorageService _blobStorageService = blobStorageService;
+        private readonly IBlobStorageService _blobStorageService = blobStorageService; 
+        private readonly IHttpContextAccessor _httpContextAccessor = httpContextAccessor;
 
         public async Task<Unit> Handle(CreateCampgroundCommand command, CancellationToken cancellationToken)
         {
             var campground = _mapper.Map<Domain.Entities.Campground>(command);
+            campground.HostId = Guid.Parse(_httpContextAccessor.HttpContext!.User.Claims.FirstOrDefault(c => c.Type == "Id")!.Value);
 
             var imageTasks = command.Images.Select(async image =>
             {

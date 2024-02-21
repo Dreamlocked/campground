@@ -13,16 +13,13 @@ using System.Security.Claims;
 
 namespace Campground.Services.Campgrounds.Api.Write.Utils
 {
-    public class AutoMapperProfile :Profile
+    public class AutoMapperProfile : Profile
     {
-        private readonly IHttpContextAccessor _httpContextAccessor;
-        public AutoMapperProfile(IHttpContextAccessor httpContextAccessor)
+        public AutoMapperProfile()
         {
-            _httpContextAccessor = httpContextAccessor;
-
             CreateMap<CreateCampgroundCommand, Domain.Entities.Campground>()
-                .ForMember(dest => dest.HostId, opt => opt.MapFrom(src => GetUserId()))
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => Guid.NewGuid()))
+                .ForMember(dest => dest.CreateAt, opt => opt.MapFrom(src => DateTime.UtcNow))
                 .ForMember(dest => dest.Images, opt => opt.Ignore());
 
             CreateMap<UpdateCampgroundCommand, Domain.Entities.Campground>()
@@ -34,7 +31,6 @@ namespace Campground.Services.Campgrounds.Api.Write.Utils
                 .ForMember(dest => dest.Salt, opt => opt.MapFrom(src => Encript.GenerateSalt()));
 
             CreateMap<CreateBookingCommand, Booking>()
-                .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => GetUserId()))
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => Guid.NewGuid()));
 
             CreateMap<UpdateBookingCommand, Booking>()
@@ -52,7 +48,5 @@ namespace Campground.Services.Campgrounds.Api.Write.Utils
                 .ForMember(dest => dest.Id, opt => opt.Ignore());
 
         }
-
-        private Guid GetUserId() => Guid.Parse(_httpContextAccessor.HttpContext!.User.FindFirstValue(ClaimTypes.NameIdentifier)!);
     }
 }

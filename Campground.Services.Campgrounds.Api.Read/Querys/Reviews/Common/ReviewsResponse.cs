@@ -2,11 +2,12 @@
 
 namespace Campground.Services.Campgrounds.Api.Read.Querys.Reviews.Common
 {
-    public record ReviewsResponse(
-        Guid Id,
-        string Comment,
-        int Rating,
-        DateTime CreateAt,
-        UserResponse User
-        );
+    public class ReviewsResponse
+    {
+        public Guid Id { get; init; }
+        public string Comment { get; init; }
+        public int Rating { get; init; }
+        public DateTime CreateAt { get; init; }
+        public UserResponse User { get; init; }
+    }
 }

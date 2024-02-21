@@ -18,8 +18,8 @@ var app = builder.Build();
 
 // Iniciar el procesador de Service Bus
 var serviceBusHandler = app.Services.GetRequiredService<IMessageSender>() as AzureServiceBusHandler;
-serviceBusHandler!.RegisterMessageHandler(builder.Configuration.GetSection("Queue:Name").Value!, app.Services.GetRequiredService<IMessageHandler>());
-serviceBusHandler!.StartProcessingAsync(builder.Configuration.GetSection("Queue:Name").Value!).GetAwaiter().GetResult();
+serviceBusHandler!.RegisterMessageHandler(builder.Configuration.GetSection("Queue:Email").Value!, app.Services.GetRequiredService<IMessageHandler>());
+serviceBusHandler!.StartProcessingAsync(builder.Configuration.GetSection("Queue:Email").Value!).GetAwaiter().GetResult();
 
 // Configure the HTTP request pipeline.
 if(app.Environment.IsDevelopment())
@@ -28,12 +28,10 @@ if(app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+// app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
 app.MapControllers();
-
-
 
 app.Run();

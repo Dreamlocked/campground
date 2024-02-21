@@ -20,12 +20,6 @@ public partial class Booking
 
     public bool? Attended { get; set; }
 
-    public string? ReviewBody { get; set; }
-
-    public DateTime? ReviewCreateAt { get; set; }
-
-    public int? ReviewRating { get; set; }
-
     public virtual Campground Campground { get; set; } = null!;
 
     public virtual Review? Review { get; set; }

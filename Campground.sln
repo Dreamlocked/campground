@@ -12,6 +12,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Elementos de la solución", "Elementos de la solución", "{504A6B05-E491-4632-96C1-EBB607634261}"
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
+		init.sql = init.sql
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Campground.API", "Campground.API\Campground.API.csproj", "{9C277107-1DD1-475F-AB41-1A08552B7A62}"
@@ -44,13 +45,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{E987FF
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Campground.Shared.Communication.AzureServiceBus", "Campground.Shared.Communication.AzureServiceBus\Campground.Shared.Communication.AzureServiceBus.csproj", "{EB9311EB-C729-4A1C-9A48-43BDEDFDB735}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Campground.Services.Campgrounds.Consumer", "Campground.Services.Campgrounds.Consumer\Campground.Services.Campgrounds.Consumer.csproj", "{E594EEC8-7329-44CC-A125-832CE7187D8D}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Campground.Shared.Authentication", "Campground.Shared.Authentication\Campground.Shared.Authentication.csproj", "{4596C993-5616-4AF9-8300-E201B9FB15DE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Campground.Shared.Authentication", "Campground.Shared.Authentication\Campground.Shared.Authentication.csproj", "{4596C993-5616-4AF9-8300-E201B9FB15DE}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Auth", "Auth", "{8E905300-FE4D-4A1C-AF3F-65EBE33F0FA2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Campground.Services.Authentications", "Campground.Services.Authentications\Campground.Services.Authentications.csproj", "{20B9FD8F-F5E9-457D-8CEB-8BBBFE06A55B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Campground.Services.Authentications", "Campground.Services.Authentications\Campground.Services.Authentications.csproj", "{20B9FD8F-F5E9-457D-8CEB-8BBBFE06A55B}"
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{6F466FB3-C8A3-47F7-B73B-6B7AB7D5E384}"
 EndProject
@@ -100,10 +99,6 @@ Global
 		{EB9311EB-C729-4A1C-9A48-43BDEDFDB735}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EB9311EB-C729-4A1C-9A48-43BDEDFDB735}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EB9311EB-C729-4A1C-9A48-43BDEDFDB735}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E594EEC8-7329-44CC-A125-832CE7187D8D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E594EEC8-7329-44CC-A125-832CE7187D8D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E594EEC8-7329-44CC-A125-832CE7187D8D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E594EEC8-7329-44CC-A125-832CE7187D8D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{4596C993-5616-4AF9-8300-E201B9FB15DE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{4596C993-5616-4AF9-8300-E201B9FB15DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4596C993-5616-4AF9-8300-E201B9FB15DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -138,7 +133,6 @@ Global
 		{2CB28F2E-D0BD-48A9-A473-12874EB3C8AA} = {EEE5E83F-5DD8-4F71-83AE-38A574E018C1}
 		{E987FFCA-51C1-4F11-9508-3C7607C6293E} = {228FC1C3-C2F8-4A90-94DF-59BE34E76B5B}
 		{EB9311EB-C729-4A1C-9A48-43BDEDFDB735} = {E987FFCA-51C1-4F11-9508-3C7607C6293E}
-		{E594EEC8-7329-44CC-A125-832CE7187D8D} = {EEE5E83F-5DD8-4F71-83AE-38A574E018C1}
 		{4596C993-5616-4AF9-8300-E201B9FB15DE} = {E987FFCA-51C1-4F11-9508-3C7607C6293E}
 		{8E905300-FE4D-4A1C-AF3F-65EBE33F0FA2} = {52E80C20-8984-4FCC-ABCF-D2BEAC9388A0}
 		{20B9FD8F-F5E9-457D-8CEB-8BBBFE06A55B} = {8E905300-FE4D-4A1C-AF3F-65EBE33F0FA2}

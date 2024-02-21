@@ -6,26 +6,29 @@ using Campground.Services.Campgrounds.Api.Read.Querys.Reviews.Common;
 using Campground.Services.Campgrounds.Api.Read.Querys.Users.Common;
 using Campground.Services.Campgrounds.Domain.Entities;
 
-namespace Campground.Services.Campgrounds.Api.Write.Utils
+namespace Campground.Services.Campgrounds.Api.Read.Utils
 {
-    public class AutoMapperProfile:Profile
+    public class AutoMapperProfile : Profile
     {
-        public AutoMapperProfile() 
+        public AutoMapperProfile()
         {
             CreateMap<User, UserResponse>();
             CreateMap<Review, ReviewsResponse>();
+            CreateMap<Image, ImagesResponse>();
+
+            CreateMap<Booking, ReviewsResponse>()
+                .ForMember(dest => dest.User, opt => opt.MapFrom(src => src.User));
 
             CreateMap<Domain.Entities.Campground, CampgroundResponse>()
-                .ForMember(dest => dest.Reviews, opt => opt.MapFrom(src => src.Bookings.Select(b => b.Review)))
-                .ForMember(dest => dest.Reviews.User, opt => opt.MapFrom(src => src.Bookings.Select(b => b.User)));
+                .ForMember(dest => dest.Reviews, opt => opt.MapFrom(src => src.Bookings.Select(b => b.Review)));
 
             CreateMap<Booking, BookingResponse>();
 
             CreateMap<Domain.Entities.Campground, CampgroundsResponse>()
-                .ForMember(dest => dest.Rating, opt => opt.MapFrom(src => src.Bookings.Select(b => b.Review.Rating).Average()));
+                .ForMember(dest => dest.Rating, opt => opt.MapFrom(src => src.Bookings.Select(b => b.Review.Rating).DefaultIfEmpty(0).Average()));
 
             CreateMap<Review, ReviewsResponse>()
-                .ForMember(dest => dest.User, opt => opt.MapFrom(src => src.Booking.User));
+                .ForPath(dest => dest.User, opt => opt.MapFrom(src => src.Booking.User));
 
             CreateMap<Notification, NotificationsResponse>();
 

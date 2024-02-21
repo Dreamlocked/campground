@@ -16,6 +16,14 @@ namespace Campground.Services.Authentications.Controllers
         {
             var authenticationResponse = await _jwtTokenHandler.GenerateJwtToken(authenticationRequest);
             if(authenticationResponse == null) return Unauthorized();
+            var cookieOptions = new CookieOptions
+            {
+                HttpOnly = true, 
+                Secure = true,
+                SameSite = SameSiteMode.None, 
+                Expires = DateTime.UtcNow.AddDays(1)
+            };
+            Response.Cookies.Append("accessToken", authenticationResponse.JwtToken, cookieOptions);
             return Ok(authenticationResponse);
         }
 

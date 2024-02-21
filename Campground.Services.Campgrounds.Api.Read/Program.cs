@@ -1,4 +1,4 @@
-using Campground.Services.Campgrounds.Api.Write.Utils;
+using Campground.Services.Campgrounds.Api.Read.Utils;
 using Campground.Services.Campgrounds.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -22,7 +22,7 @@ if(app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+// app.UseHttpsRedirection();
 
 app.UseAuthorization();
 

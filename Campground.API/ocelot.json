@@ -6,7 +6,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "campground.services.authentications",
-          "Port": 8081
+          "Port": 8080
         }
       ],
       "UpstreamPathTemplate": "/api/account/{everything}",
@@ -19,7 +19,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "campground.services.emails",
-          "Port": 8081
+          "Port": 8080
         }
       ],
       "UpstreamPathTemplate": "/api/emails/{everything}",
@@ -32,7 +32,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "campground.services.campgrounds.api.write",
-          "Port": 8081
+          "Port": 8080
         }
       ],
       "UpstreamPathTemplate": "/api/campgrounds/{everything}",
@@ -45,7 +45,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "campground.services.campgrounds.api.read",
-          "Port": 8081
+          "Port": 8080
         }
       ],
       "UpstreamPathTemplate": "/api/campgrounds/{everything}",
@@ -58,7 +58,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "campground.services.billings",
-          "Port": 8081
+          "Port": 8080
         }
       ],
       "UpstreamPathTemplate": "/api/billings/{everything}",
@@ -67,6 +67,6 @@
     }
   ],
   "GlobalConfiguration": {
-    "BaseUrl": "https://campground.api-gateway:8081"
+    "BaseUrl": "http://localhost:8080"
   }
 }

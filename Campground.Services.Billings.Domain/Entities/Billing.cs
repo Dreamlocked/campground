@@ -16,8 +16,6 @@ namespace Campground.Services.Billings.Domain.Entities
 
         public string? TenantId { get; set; }
 
-        public string? HostId { get; set; }
-
         public string? BookingId { get; set; }
 
         public decimal? Amount { get; set; }

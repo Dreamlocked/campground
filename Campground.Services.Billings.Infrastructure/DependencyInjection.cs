@@ -1,5 +1,8 @@
 ﻿using Campground.Services.Billings.Infrastructure.Data;
 using Campground.Services.Billings.Infrastructure.Data.Repository;
+using Campground.Services.Billings.Infrastructure.HandlerMessage;
+using Campground.Shared.Communication.AzureServiceBus;
+using Campground.Shared.Communication.AzureServiceBus.Interfaces;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -19,6 +22,8 @@ namespace Campground.Services.Billings.Infrastructure
                 configuration.GetSection("BillingStoreDatabase"));
 
             services.AddScoped<BillingsRepository>();
+            services.AddAzureServiceBusHandler(configuration);
+            services.AddSingleton<MessageSender>();
 
             return services;
         }

@@ -6,19 +6,21 @@ using System.Security.Claims;
 
 namespace Campground.Services.Campgrounds.Api.Write.Commands.Bookings.Create
 {
-    internal sealed class CreateBookingCommandHandler(IUnitOfWork unitOfWork, IMapper mapper) : IRequestHandler<CreateBookingCommand, Unit>
+    internal sealed class CreateBookingCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, IHttpContextAccessor httpContextAccessor) : IRequestHandler<CreateBookingCommand, Guid>
     {
         private readonly IUnitOfWork _unitOfWork = unitOfWork;
         private readonly IMapper _mapper = mapper;
+        private readonly IHttpContextAccessor _httpContextAccessor = httpContextAccessor;
 
-        public async Task<Unit> Handle(CreateBookingCommand command, CancellationToken cancellationToken)
+        public async Task<Guid> Handle(CreateBookingCommand command, CancellationToken cancellationToken)
         {
             var booking = _mapper.Map<Booking>(command);
+            booking.UserId = Guid.Parse(_httpContextAccessor.HttpContext!.User.Claims.FirstOrDefault(c => c.Type == "Id")!.Value);
 
             await _unitOfWork.BookingRepository.AddAsync(booking);
             await _unitOfWork.CompleteAsync();
 
-            return Unit.Value;
+            return booking.Id;
         }
     }
 }

@@ -11,23 +11,23 @@ namespace Campground.Services.Campgrounds.Infrastructure.Data.Repository
 {
     public class CampgroundRepository(CampgroundContext dbContext) : BaseRepository<Domain.Entities.Campground>(dbContext) 
     {
+        public async Task<List<Domain.Entities.Campground?>> GetAllWithDetails()
+        {
+            return await _dbContext.Campgrounds
+                .Include(c => c.Images)
+                .ToListAsync();
+        }
+
         public async Task<Domain.Entities.Campground?> GetByIdWithDetails(Guid id)
         {
             return await _dbContext.Campgrounds
                 .Include(c => c.Host)
                 .Include(c => c.Bookings)
-                .ThenInclude(b => b.Review)
-                .FirstOrDefaultAsync(c => c.Id == id);
-        }
-
-        public async Task<List<Domain.Entities.Campground?>> GetAllWithDetails(Guid id)
-        {
-            return _dbContext.Campgrounds
-                .Include(c => c.Host)
-                .Include(c => c.Bookings)
                 .ThenInclude(b => b.User)
                 .Include(c => c.Bookings)
-                .ThenInclude(b => b.Review).ToList();
+                .ThenInclude(b => b.Review)
+                .Include(c => c.Images)
+                .FirstOrDefaultAsync(c => c.Id == id);
         }
 
     }

@@ -58,15 +58,7 @@ public partial class CampgroundContext : DbContext
             entity.Property(e => e.Paid)
                 .HasDefaultValue(false)
                 .HasColumnName("paid");
-            entity.Property(e => e.ReviewBody)
-                .IsUnicode(false)
-                .HasColumnName("review_body");
-            entity.Property(e => e.ReviewCreateAt)
-                .HasColumnType("datetime")
-                .HasColumnName("review_create_at");
-            entity.Property(e => e.ReviewRating).HasColumnName("review_rating");
             entity.Property(e => e.UserId).HasColumnName("user_id");
-
             entity.HasOne(d => d.Campground).WithMany(p => p.Bookings)
                 .HasForeignKey(d => d.CampgroundId)
                 .OnDelete(DeleteBehavior.ClientSetNull)

@@ -47,9 +47,20 @@ namespace Campground.Shared.Communication.AzureServiceBus
 
         public async Task SendMessageAsync<T>(string queueName, T messageObject)
         {
-            var message = JsonSerializer.Serialize(messageObject)!;
-            ServiceBusSender sender = _client.CreateSender(queueName);
-            await sender.SendMessageAsync(new ServiceBusMessage(message));
+            try
+            {
+                var message = JsonSerializer.Serialize(messageObject)!;
+                ServiceBusSender sender = _client.CreateSender(queueName);
+                await sender.SendMessageAsync(new ServiceBusMessage(message));
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine($"Error al enviar el mensaje: {ex.Message}");
+                if(ex.InnerException != null)
+                {
+                    Console.WriteLine($"Inner Exception: {ex.InnerException.Message}");
+                }
+            }
         }
 
         private static Task ErrorHandler(ProcessErrorEventArgs args)

@@ -1,14 +1,19 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Campground.Services.Billings.Infrastructure.Data.Repository;
+using Campground.Services.Billings.Infrastructure.HandlerMessage;
+using Microsoft.AspNetCore.Authorization;
+using Campground.Services.Billings.Models;
 namespace Campground.Services.Billings.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
-    public class BillingsController(BillingsRepository billingsRespository) : ControllerBase
+    public class BillingsController(BillingsRepository billingsRespository,MessageSender messageSender) : ControllerBase
     {
 
         private readonly BillingsRepository _billingsRepository = billingsRespository;
+        private readonly MessageSender _messageSender = messageSender;
 
         [HttpGet]
         public async Task<List<Domain.Entities.Billing>> Get() => await _billingsRepository.GetAsync();
@@ -24,11 +29,19 @@ namespace Campground.Services.Billings.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post(Domain.Entities.Billing newBilling)
+        public async Task<IActionResult> Post(BillingDto newBilling)
         {
-            await _billingsRepository.CreateAsync(newBilling);
+            var billing = new Domain.Entities.Billing
+            {
+                TenantId = HttpContext.User.Claims.FirstOrDefault(c => c.Type == "Id")!.Value,
+                BookingId = newBilling.BookingId,
+                Amount = newBilling.Amount,
+                CreatedAt = DateTime.Now
+            };
+            await _billingsRepository.CreateAsync(billing);
+            await _messageSender.SendBillingMessage(billing);
 
-            return CreatedAtAction(nameof(Get), new { id = newBilling.Id }, newBilling);
+            return CreatedAtAction(nameof(Get), new { id = billing.Id }, billing);
         }
 
         [HttpPut("{id:length(24)}")]

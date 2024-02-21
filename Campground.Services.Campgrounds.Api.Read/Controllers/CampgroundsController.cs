@@ -1,4 +1,5 @@
-﻿using Campground.Services.Campgrounds.Api.Read.Querys.Campgrounds.GetById;
+﻿using Campground.Services.Campgrounds.Api.Read.Querys.Campgrounds.GetAll;
+using Campground.Services.Campgrounds.Api.Read.Querys.Campgrounds.GetById;
 using Campground.Services.Campgrounds.Api.Read.Querys.Users.GetAll;
 using MediatR;
 using Microsoft.AspNetCore.Http;
@@ -11,6 +12,13 @@ namespace Campground.Services.Campgrounds.Api.Read.Controllers
     public class CampgroundsController(ISender mediator) : ControllerBase
     {
         private readonly ISender _mediator = mediator;
+
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
+        {
+            var campgrounds = await _mediator.Send(new GetAllCampgroundQuery());
+            return Ok(campgrounds);
+        }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(Guid id)

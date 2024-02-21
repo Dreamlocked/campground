@@ -1,8 +1,9 @@
 ﻿namespace Campground.Services.Campgrounds.Api.Read.Querys.Campgrounds.Common
 {
-    public record ImagesResponse(
-        Guid Id,
-        string Filename,
-        string Url
-        );
+    public class ImagesResponse
+    {
+        public Guid Id { get; init; }
+        public string Filename { get; init; }
+        public string Url { get; init; }
+    }
 }
