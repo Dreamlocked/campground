@@ -13,17 +13,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddReverseProxy()
-    .LoadFromConfig(builder.Configuration.GetSection("ReverseProxy"))
-    .AddTransforms(builderContext =>
-    {
-        builderContext.AddRequestTransform(async transformContext =>
-        {
-            if(transformContext.HttpContext.Request.Cookies.TryGetValue("accessToken", out var cookieValue))
-            {
-                transformContext.ProxyRequest.Headers.Add("Cookie", cookieValue);
-            }
-        });
-    });
+    .LoadFromConfig(builder.Configuration.GetSection("ReverseProxy"));
 
 builder.Services.AddAuthentication(options =>
 {
@@ -41,15 +31,6 @@ builder.Services.AddAuthentication(options =>
         ValidateLifetime = false,
         ValidateIssuerSigningKey = true
     };
-
-    o.Events = new JwtBearerEvents
-    {
-        OnMessageReceived = context =>
-        {
-            context.Token = context.Request.Cookies[builder.Configuration["Jwt:CookieName"]!];
-            return Task.CompletedTask;
-        }
-    };
 });
 
 builder.Services.AddAuthorization(options =>
@@ -60,19 +41,16 @@ builder.Services.AddAuthorization(options =>
         .Build();
 });
 
-// Add CORS services
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowSpecificOrigins",
         builder =>
         {
-            builder.WithOrigins(["https://campgrounds-frontend.vercel.app","http://localhost"])
-                .AllowAnyHeader()
-                .AllowCredentials()
-                .AllowAnyMethod();
+            builder.AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader();
         });
 });
-
 
 var app = builder.Build();
 
@@ -83,6 +61,7 @@ if(app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseCors("AllowSpecificOrigins");
 // app.UseHttpsRedirection();
 
 app.UseAuthentication();
