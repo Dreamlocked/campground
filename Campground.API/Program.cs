@@ -46,15 +46,17 @@ builder.Services.AddCors(options =>
     options.AddPolicy("AllowSpecificOrigins",
         builder =>
         {
-            builder.AllowAnyOrigin()
+            builder.WithOrigins("https://campgrounds-frontend.vercel.app","http://localhost")
                 .AllowAnyMethod()
-                .AllowAnyHeader();
+                .AllowAnyHeader()
+                .AllowCredentials();
         });
 });
 
+
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+
 if(app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -62,7 +64,6 @@ if(app.Environment.IsDevelopment())
 }
 
 app.UseCors("AllowSpecificOrigins");
-// app.UseHttpsRedirection();
 
 app.UseAuthentication();
 app.UseAuthorization();

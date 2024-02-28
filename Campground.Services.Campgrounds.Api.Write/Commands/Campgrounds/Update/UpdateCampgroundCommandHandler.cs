@@ -16,7 +16,8 @@ namespace Campground.Services.Campgrounds.Api.Write.Commands.Campgrounds.Update
         private readonly IBlobStorageService _blobStorageService = blobStorageService;
         public async Task<Unit> Handle(UpdateCampgroundCommand command, CancellationToken cancellationToken)
         {
-            var campground = _mapper.Map<Domain.Entities.Campground>(command);
+            var campground = await _unitOfWork.CampgroundRepository.GetByIdAsync(command.Id);
+            _mapper.Map(command, campground);
 
             var imageTasks = command.Images.Select(async image =>
             {

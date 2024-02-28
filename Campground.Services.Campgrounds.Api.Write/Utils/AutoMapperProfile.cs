@@ -23,7 +23,6 @@ namespace Campground.Services.Campgrounds.Api.Write.Utils
                 .ForMember(dest => dest.Images, opt => opt.Ignore());
 
             CreateMap<UpdateCampgroundCommand, Domain.Entities.Campground>()
-                .ForMember(dest => dest.Id, opt => opt.Ignore())
                 .ForMember(dest => dest.Images, opt => opt.Ignore());
 
             CreateMap<CreateUserCommand, User>()
@@ -33,8 +32,7 @@ namespace Campground.Services.Campgrounds.Api.Write.Utils
             CreateMap<CreateBookingCommand, Booking>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => Guid.NewGuid()));
 
-            CreateMap<UpdateBookingCommand, Booking>()
-                .ForMember(dest => dest.Id, opt => opt.Ignore());
+            CreateMap<UpdateBookingCommand, Booking>();
 
             CreateMap<CreateNotificationCommand, Notification>()
                 .ForMember(dest => dest.CreateAt, opt => opt.MapFrom(src => DateTime.UtcNow))

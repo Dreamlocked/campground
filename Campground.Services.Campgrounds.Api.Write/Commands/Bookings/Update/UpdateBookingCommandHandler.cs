@@ -12,7 +12,8 @@ namespace Campground.Services.Campgrounds.Api.Write.Commands.Bookings.Update
         private readonly IMapper _mapper = mapper;
         public async Task<Unit> Handle(UpdateBookingCommand command, CancellationToken cancellationToken)
         {
-            var booking = _mapper.Map<Booking>(command);
+            var booking = await _unitOfWork.BookingRepository.GetByIdAsync(command.Id);
+            _mapper.Map(command, booking);
 
             await _unitOfWork.BookingRepository.UpdateAsync(booking);
             await _unitOfWork.CompleteAsync();

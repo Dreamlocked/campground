@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace Campground.Services.Billings.Domain.Entities
 {
+    [BsonIgnoreExtraElements]
     public class Billing
     {
         [BsonId]
